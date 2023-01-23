@@ -19,14 +19,20 @@ function Form(props) {
         if (user.name.length === 0) {
             errors.push("Name can't be blank")
         }
-        if (user.email.length === 0) {
-            errors.push("Email ")
+        if (!user.email) {
+            errors.push("Invalid email")
         }
-        if (user.phoneNumber ) {
-            errors.push()
+
+        if(!user.phoneNumber) {
+            errors.push("Phone number cant be blank")
         }
-        if (!user.phoneNumber) {
-            errors.push("Phone number must be present")
+
+        if (user.phoneNumber && !(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(user.phoneNumber))) {
+            errors.push("Invalid Phone Number")
+        }
+
+        if (user.phoneNumber && !user.phoneType) {
+            errors.push("Phone type must present")
         }
         if (user.bio.length > 280) {
             errors.push("Max 280 characters")
@@ -60,8 +66,8 @@ function Form(props) {
 
     return(
         <div>
-            {/* {showErrors()} */}
-            <form className='form'>
+            {showErrors()}
+            <form className='form' onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
                 <input
                     type="text"
@@ -110,11 +116,9 @@ function Form(props) {
                 <br />
                 <textarea rows="4" cols="50"></textarea>
                 <br />
-                <h3>Sign Up For Email Notification</h3>
                 <input type="checkbox" id="Yes" name="signUp" value={user.signUp} />
-                <label for="Yes">Yes</label>
-                <input type="checkbox" id="No" name="signUp" value={user.signUp} />
-                <label for="No">No</label>
+                <label for="Yes">Sign Up For Email Notification</label>
+  
                 <br />
                 <button>Sign Up</button>
             </form>
